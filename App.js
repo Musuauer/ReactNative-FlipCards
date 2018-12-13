@@ -1,11 +1,19 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { saveDataToLocalStorage } from './utils/api'
+import Decklist from './components/Decklist'
 
-export default class App extends React.Component {
+export default class App extends Component {
+  componentDidMount () {
+    saveDataToLocalStorage()
+  }
+
   render () {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to iuhstart working on your app!</Text>
+
+        <Decklist />
+        
       </View>
     )
   }

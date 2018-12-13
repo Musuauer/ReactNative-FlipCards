@@ -14,7 +14,7 @@ export const saveDataToLocalStorage = async () => {
 export const getDecks = async () => {
   try {
     const allDecks = await AsyncStorage.getItem(FLIPCARDS_KEY)
-    if (allDecks !== null) return allDecks.json()
+    if (allDecks !== null) return JSON.parse(allDecks)
   } catch (error) {
     console.log('error getting decks:', error)
   }
