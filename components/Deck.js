@@ -2,18 +2,17 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 
 export const Deck = ({ title, cardsNumber }) => (
-  <View style={styles.deck}>
-    {console.log(title, cardsNumber)}
-    <Text style={styles.title}>
+  <View style={deckStyles.deck}>
+    <Text style={deckStyles.title}>
       {title}
     </Text>
-    <Text style={styles.cardsNumber}>
+    <Text style={deckStyles.cardsNumber}>
       {cardsNumber} cards
     </Text>
   </View>
 )
 
-const styles = StyleSheet.create({
+export const deckStyles = StyleSheet.create({
   deck: {
     width: 270,
     height: 180,

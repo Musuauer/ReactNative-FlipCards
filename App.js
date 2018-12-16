@@ -7,6 +7,7 @@ import Quiz from './screens/Quiz'
 import AddCard from './screens/AddCard'
 import { createStackNavigator, createAppContainer, createMaterialTopTabNavigator } from 'react-navigation'
 import { View, StatusBar } from 'react-native'
+import { Constants } from 'expo'
 // import { createStore } from 'redux'
 // import { Provider } from 'react-redux'
 // import reducer from './reducers'
@@ -17,22 +18,17 @@ const Tabs = createMaterialTopTabNavigator(
       screen: Decklist
     },
     NewDeck: {
-      screen: NewDeck,
-      navigationOptions: {
-        title: 'New Deck'
-      }
+      screen: NewDeck
     }
   },
   {
     animationEnabled: true,
+    swipeEnabled: true,
     tabBarOptions: {
       activeTintColor: 'white',
       inactiveTintColor: 'gray',
       labelStyle: {
-        fontSize: 12
-      },
-      indicatorStyle: {
-        backgroundColor: 'yellow'
+        fontSize: 16
       },
       tabStyle: {
         backgroundColor: 'darkblue'
@@ -71,6 +67,14 @@ const AppNavigator = createStackNavigator(
 )
 
 const AppContainer = createAppContainer(AppNavigator)
+
+const MyStatusBar = ({backgroundColor, ...props}) => {
+  return (
+    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </View>
+  )
+}
 export default class App extends Component {
   componentDidMount () {
     saveDataToLocalStorage()
@@ -79,7 +83,7 @@ export default class App extends Component {
     return (
       // <Provider store={createStore(reducer)}>
       <View style={{flex: 1}}>
-        <StatusBar translucent backgroundColor={'orange'} barStyle='light-content' />
+        <MyStatusBar translucent backgroundColor={'black'} barStyle='light-content' />
         <AppContainer />
       </View>
       // </Provider>

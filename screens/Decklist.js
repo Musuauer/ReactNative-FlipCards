@@ -1,65 +1,70 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 import { getDecks } from '../utils/api'
 import { Deck } from '../components/Deck'
+import { AppLoading } from 'expo'
 
 export default class Decklist extends Component {
   state = {
+    ready: false,
     allDecks: []
   }
   componentDidMount () {
     getDecks().then(allDecks =>
-      this.setState({ allDecks })
+      this.setState({ allDecks, ready: true })
     )
   }
 
   _keyExtractor = (item, index) => item.title
 
-  goToDeck = (deck) => {
+  _goToDeck = (title) => {
     this.props.navigation.navigate('IndividualDeck', {
-      deck
+      title
     })
   }
 
   _renderItem = ({item}) => (
-    <Deck
-      id={item.title}
-      onPressItem={this.goToDeck}
-      title={item.title}
-      cardsNumber={item.cardsNumber}
-    />
+    <TouchableOpacity onPress={() => this._goToDeck(item.title)}>
+      <Deck
+        id={item.title}
+        title={item.title}
+        cardsNumber={item.cardsNumber}
+      />
+    </TouchableOpacity>
   )
 
   render () {
-    const { allDecks } = this.state
+    const { allDecks, ready } = this.state
+
+    if (ready === false) {
+      return <AppLoading />
+    }
 
     let decks
-    allDecks && (decks = Object.values(allDecks).map(deck => ({
+    decks = Object.values(allDecks).map(deck => ({
       title: deck.title,
       cardsNumber: deck.questions.length
     }))
-    )
 
-    console.log('alldecks', decks)
+    console.log('decks', decks)
 
     return (
-      <View style={styles.decklistContainer}>
+      <View style={styles.center}>
         {allDecks &&
-        <FlatList
-          contentContainerStyle={styles.deckList}
-          data={decks}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-        />
+          <FlatList
+            contentContainerStyle={styles.deckList}
+            data={decks}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+          />
         }
-
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  deckListContainer: {
+  center: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',

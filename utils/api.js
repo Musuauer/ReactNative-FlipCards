@@ -20,9 +20,14 @@ export const getDecks = async () => {
   }
 }
 
-export const getDeck = id => {
-  const decks = getDecks()
-  return decks[id]
+export const getDeck = async id => {
+  try {
+    const decks = await getDecks()
+    console.log('decks from getDeck', decks)
+    return decks[id]
+  } catch (error) {
+    console.log('error getting deck:', error)
+  }
 }
 
 export const saveDeckTitle = async title => {
