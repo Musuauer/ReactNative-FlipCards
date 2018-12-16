@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { getDecks } from '../utils/api'
-import { Deck } from './Deck'
+import { Deck } from '../components/Deck'
 
 export default class Decklist extends Component {
   state = {
@@ -32,10 +32,13 @@ export default class Decklist extends Component {
 
   render () {
     const { allDecks } = this.state
-    const decks = Object.values(allDecks).map(deck => ({
+
+    let decks
+    allDecks && (decks = Object.values(allDecks).map(deck => ({
       title: deck.title,
       cardsNumber: deck.questions.length
     }))
+    )
 
     console.log('alldecks', decks)
 
@@ -58,21 +61,14 @@ export default class Decklist extends Component {
 const styles = StyleSheet.create({
   deckListContainer: {
     flex: 1,
-    width: 200,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 4,
-    borderWidth: 3,
-    borderColor: 'red'
+    justifyContent: 'center'
   },
   deckList: {
     flex: 1,
+    width: 400,
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 25,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: '#d6d7da'
+    justifyContent: 'center'
   }
 })
