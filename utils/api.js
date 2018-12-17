@@ -11,7 +11,7 @@ export const saveDataToLocalStorage = async () => {
   }
 }
 
-export const getDecks = async () => {
+export const _getDecks = async () => {
   try {
     const allDecks = await AsyncStorage.getItem(FLIPCARDS_KEY)
     if (allDecks !== null) return JSON.parse(allDecks)
@@ -45,6 +45,7 @@ export const saveDeckTitle = async title => {
 }
 
 export const addCardToDeck = async (title, card) => {
+  console.log('addcardtodeck...', title, '...', card)
   const decks = getDecks()
 
   const allUpdatedDecks = {

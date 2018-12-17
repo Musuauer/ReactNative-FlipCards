@@ -3,18 +3,25 @@ import { StyleSheet, View, Text, Button } from 'react-native'
 import { getDeck } from '../utils/api'
 import { AppLoading } from 'expo'
 import { deckStyles } from '../components/Deck'
+import { connect } from 'react-redux'
 
-export default class IndividualDeck extends Component {
+class IndividualDeck extends Component {
   state = {
     ready: false,
     deck: {}
   }
   componentDidMount () {
+    this.setDeck()
+  }
+
+  setDeck = () => {
     const title = this.props.navigation.getParam('title', 'React')
-    getDeck(title).then(deck => this.setState({ deck, ready: true }))
+    this.props.decks[title].then(deck => this.setState({ deck, ready: true }))
   }
 
   render () {
+    console.log('individualdeck PROPS', this.props)
+
     const { deck, ready } = this.state
 
     if (ready === false) {
@@ -52,6 +59,16 @@ export default class IndividualDeck extends Component {
     )
   }
 }
+
+function mapStateToProps (state) {
+  return {
+    decks: Object.values(state).map(deck => ({
+      title: deck.title,
+      cardsNumber: deck.questions.length
+    }))
+  }
+}
+export default connect(mapStateToProps)(IndividualDeck)
 
 const styles = StyleSheet.create({
   center: {

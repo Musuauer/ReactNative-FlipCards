@@ -20,5 +20,9 @@ export const allDecks = {
         answer: 'The combination of a function and the lexical environment within which that function was declared.'
       }
     ]
+  },
+  Test1: {
+    title: 'Test1',
+    questions: []
   }
 }

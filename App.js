@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { saveDataToLocalStorage } from './utils/api'
-import Decklist from './screens/Decklist'
+import DecklistContainer from './screens/DecklistContainer'
 import NewDeck from './screens/NewDeck'
 import IndividualDeck from './screens/IndividualDeck'
 import Quiz from './screens/Quiz'
@@ -8,14 +8,15 @@ import AddCard from './screens/AddCard'
 import { createStackNavigator, createAppContainer, createMaterialTopTabNavigator } from 'react-navigation'
 import { View, StatusBar } from 'react-native'
 import { Constants } from 'expo'
-// import { createStore } from 'redux'
-// import { Provider } from 'react-redux'
-// import reducer from './reducers'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers'
+import middleware from './middleware'
 
 const Tabs = createMaterialTopTabNavigator(
   {
     Decks: {
-      screen: Decklist
+      screen: DecklistContainer
     },
     NewDeck: {
       screen: NewDeck
@@ -56,7 +57,7 @@ const AppNavigator = createStackNavigator(
     /* The default header config */
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: '#f4511e'
+        backgroundColor: '#ba8c28'
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
@@ -75,18 +76,21 @@ const MyStatusBar = ({backgroundColor, ...props}) => {
     </View>
   )
 }
+
+let store = createStore(reducer, middleware)
 export default class App extends Component {
   componentDidMount () {
     saveDataToLocalStorage()
   }
   render () {
+    console.log('app component mounted')
     return (
-      // <Provider store={createStore(reducer)}>
-      <View style={{flex: 1}}>
-        <MyStatusBar translucent backgroundColor={'black'} barStyle='light-content' />
-        <AppContainer />
-      </View>
-      // </Provider>
+      <Provider store={store}>
+        <View style={{flex: 1}}>
+          <MyStatusBar translucent backgroundColor={'darkblue'} barStyle='light-content' />
+          <AppContainer />
+        </View>
+      </Provider>
     )
   }
 }

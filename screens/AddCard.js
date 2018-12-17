@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
-import { addCardtoDeck } from '../utils/api'
+import { addCardToDeck } from '../utils/api'
 
 export default class AddCard extends Component {
   state = {
@@ -16,7 +16,7 @@ export default class AddCard extends Component {
     }
     const title = this.props.title
 
-    addCardtoDeck(title, card)
+    addCardToDeck(title, card)
     this.props.navigation.goBack()
   }
 

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
-import { saveDeckTitle } from '../utils/api'
+import { connect } from 'react-redux'
+import { addDeckRedux } from '../actions'
 
-export default class NewDeck extends Component {
+// import { saveDeckTitle } from '../utils/api'
+
+class NewDeck extends Component {
   state = {
     title: ''
   }
@@ -10,7 +13,11 @@ export default class NewDeck extends Component {
   handleSubmit = () => {
     const { title } = this.state
 
-    saveDeckTitle(title)
+    const deck = {
+      title: title,
+      questions: []
+    }
+    this.props.dispatch(addDeckRedux(deck))
     this.props.navigation.navigate('IndividualDeck', {
       title: title
     })
@@ -38,3 +45,5 @@ export default class NewDeck extends Component {
     )
   }
 }
+
+export default connect()(NewDeck)
