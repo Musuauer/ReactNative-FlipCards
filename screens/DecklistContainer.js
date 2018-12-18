@@ -74,6 +74,7 @@ class DecklistContainer extends Component {
     return (
       <Decklist
         decks={this.props.decks}
+        navigation={this.props.navigation}
       />
     )
   }

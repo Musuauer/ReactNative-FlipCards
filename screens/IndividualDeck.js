@@ -16,7 +16,9 @@ class IndividualDeck extends Component {
 
   setDeck = () => {
     const title = this.props.navigation.getParam('title', 'React')
-    this.props.decks[title].then(deck => this.setState({ deck, ready: true }))
+
+    const thisDeck = this.props.decks.filter(deck => deck.title === title)
+    this.setState({ deck: thisDeck[0], ready: true })
   }
 
   render () {
@@ -28,10 +30,7 @@ class IndividualDeck extends Component {
       return <AppLoading />
     }
 
-    console.log('deckkk', deck)
-    const { title, questions } = deck
-    const cardsNumber = questions.length
-    console.log(questions)
+    const { title, cardsNumber } = deck
 
     return (
       <View style={styles.center}>
