@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TextInput, Button } from 'react-native'
+import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { addCardToDeckRedux } from '../actions'
 import { connect } from 'react-redux'
+import { sharedStyles } from '../utils/sharedStyles'
 
 class AddCard extends Component {
+  static navigationOptions = {
+    title: 'New Question'
+  }
   state = {
     questionText: '',
     answerText: ''
@@ -25,23 +29,27 @@ class AddCard extends Component {
     console.log('add card props', this.props)
 
     return (
-      <View style={{padding: 10}}>
+      <View style={sharedStyles.container}>
         <TextInput
-          style={{height: 40}}
+          style={sharedStyles.textInput}
           placeholder='Type the question here'
           onChangeText={questionText => this.setState({ questionText })}
         />
         <TextInput
-          style={{height: 40}}
+          style={sharedStyles.textInput}
           placeholder='Type its answer here'
           onChangeText={answerText => this.setState({ answerText })}
         />
-        <Button
-          onPress={this.handleSubmit}
-          title='Submit'
-          color='#841584'
-          accessibilityLabel='Save card and go back'
-        />
+        <View style={sharedStyles.buttonsContainer}>
+          <TouchableOpacity
+            style={sharedStyles.button}
+            onPress={this.handleSubmit}
+          >
+            <Text style={sharedStyles.buttonText}>
+            Submit
+            </Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
     )
