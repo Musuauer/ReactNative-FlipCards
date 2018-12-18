@@ -1,36 +1,25 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, Button } from 'react-native'
-import { getDeck } from '../utils/api'
-import { AppLoading } from 'expo'
 import { deckStyles } from '../components/Deck'
 import { connect } from 'react-redux'
 
 class IndividualDeck extends Component {
-  state = {
-    ready: false,
-    deck: {}
-  }
-  componentDidMount () {
-    this.setDeck()
+  navigateToAddCard = () => {
+    this.props.navigation.navigate('AddCard', {
+      title: this.props.thisDeck[0].title
+    })
   }
 
-  setDeck = () => {
-    const title = this.props.navigation.getParam('title', 'React')
-
-    const thisDeck = this.props.decks.filter(deck => deck.title === title)
-    this.setState({ deck: thisDeck[0], ready: true })
+  navigateToQuiz = () => {
+    this.props.navigation.navigate('Quiz', {
+      title: this.state.title
+    })
   }
 
   render () {
     console.log('individualdeck PROPS', this.props)
 
-    const { deck, ready } = this.state
-
-    if (ready === false) {
-      return <AppLoading />
-    }
-
-    const { title, cardsNumber } = deck
+    const { title, cardsNumber } = this.props.thisDeck[0]
 
     return (
       <View style={styles.center}>
@@ -43,13 +32,13 @@ class IndividualDeck extends Component {
           </Text>
         </View>
         <Button
-          onPress={() => this.props.navigation.navigate('Quiz')}
+          onPress={this.navigateToQuiz}
           title='Start Quiz'
           color='darkblue'
           accessibilityLabel='Start Quiz'
         />
         <Button
-          onPress={() => this.props.navigation.navigate('AddCard')}
+          onPress={this.navigateToAddCard}
           title='New Question'
           color='darkblue'
           accessibilityLabel='Add a new question'
@@ -59,12 +48,15 @@ class IndividualDeck extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, props) {
+  const decks = Object.values(state).map(deck => ({
+    title: deck.title,
+    cardsNumber: deck.questions.length
+  }))
+  const title = props.navigation.getParam('title')
+
   return {
-    decks: Object.values(state).map(deck => ({
-      title: deck.title,
-      cardsNumber: deck.questions.length
-    }))
+    thisDeck: decks.filter(deck => deck.title === title)
   }
 }
 export default connect(mapStateToProps)(IndividualDeck)

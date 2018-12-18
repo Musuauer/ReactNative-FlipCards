@@ -83,7 +83,6 @@ export default class App extends Component {
     saveDataToLocalStorage()
   }
   render () {
-    console.log('app component mounted')
     return (
       <Provider store={store}>
         <View style={{flex: 1}}>

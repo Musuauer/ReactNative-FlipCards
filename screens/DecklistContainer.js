@@ -25,7 +25,6 @@ class Decklist extends Component {
   )
 
   render () {
-    console.log('decklist props', this.props.decks)
     const { decks } = this.props
 
     if (!decks) {
@@ -81,7 +80,6 @@ class DecklistContainer extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('statefrom connect', state)
   return {
     decks: Object.values(state).map(deck => ({
       title: deck.title,

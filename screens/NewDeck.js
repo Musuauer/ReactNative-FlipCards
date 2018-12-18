@@ -3,8 +3,6 @@ import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
 import { connect } from 'react-redux'
 import { addDeckRedux } from '../actions'
 
-// import { saveDeckTitle } from '../utils/api'
-
 class NewDeck extends Component {
   state = {
     title: ''
@@ -18,9 +16,14 @@ class NewDeck extends Component {
       questions: []
     }
     this.props.dispatch(addDeckRedux(deck))
-    this.props.navigation.navigate('IndividualDeck', {
-      title: title
-    })
+    this.setState(
+      { title: '' },
+      () => {
+        return this.props.navigation.navigate('IndividualDeck', {
+          title: title
+        })
+      }
+    )
   }
 
   render () {
@@ -33,6 +36,8 @@ class NewDeck extends Component {
           style={{height: 40}}
           placeholder='Deck title'
           onChangeText={title => this.setState({ title })}
+          clearButtonMode='always'
+          value={this.state.title}
         />
         <Button
           onPress={this.handleSubmit}

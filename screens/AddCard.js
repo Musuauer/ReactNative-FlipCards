@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
-import { addCardToDeck } from '../utils/api'
+import { StyleSheet, View, TextInput, Button } from 'react-native'
+import { addCardToDeckRedux } from '../actions'
+import { connect } from 'react-redux'
 
-export default class AddCard extends Component {
+class AddCard extends Component {
   state = {
     questionText: '',
     answerText: ''
@@ -14,13 +15,15 @@ export default class AddCard extends Component {
       question: questionText,
       answer: answerText
     }
-    const title = this.props.title
+    const title = this.props.navigation.getParam('title')
 
-    addCardToDeck(title, card)
+    this.props.dispatch(addCardToDeckRedux(title, card))
     this.props.navigation.goBack()
   }
 
   render () {
+    console.log('add card props', this.props)
+
     return (
       <View style={{padding: 10}}>
         <TextInput
@@ -44,3 +47,5 @@ export default class AddCard extends Component {
     )
   }
 }
+
+export default connect(null)(AddCard)
