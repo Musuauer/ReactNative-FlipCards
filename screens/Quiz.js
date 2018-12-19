@@ -37,7 +37,7 @@ export default class Quiz extends Component {
     this.correctCardFace()
 
     const newQuestionsLeft = [...this.state.questionsLeft]
-    newQuestionsLeft.splice(0, 1)
+    newQuestionsLeft.slice(0, 1)
     this.setState({ questionsLeft: newQuestionsLeft })
   }
 
