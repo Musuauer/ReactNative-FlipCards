@@ -17,12 +17,17 @@ export const allDecks = {
     questions: [
       {
         question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
+        answer: 'The combination of a function and the lexical environment within which that function was declared'
       }
     ]
   },
-  Test1: {
-    title: 'Test1',
-    questions: []
+  Redux: {
+    title: 'Redux',
+    questions: [
+      {
+        question: 'Is Redux part of React?',
+        answer: 'No'
+      }
+    ]
   }
 }

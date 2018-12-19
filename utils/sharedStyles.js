@@ -12,7 +12,7 @@ export const sharedStyles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    borderWidth: 5,
+    borderWidth: 2,
     borderColor: 'darkblue',
     padding: 10,
     width: 170,

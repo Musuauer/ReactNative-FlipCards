@@ -11,8 +11,8 @@ export default class Quiz extends Component {
   }
   state = {
     title: '',
-    questions: [],
     questionsLeft: [],
+    totalQuestions: 0,
     showAnswer: false,
     showResults: false,
     correctAnswers: 0
@@ -21,26 +21,36 @@ export default class Quiz extends Component {
   componentDidMount () {
     const deck = this.props.navigation.getParam('deck')
     const { title, questions } = deck
-    this.setState({ title, questions, questionsLeft: questions })
+    this.setState({ title, questionsLeft: questions, totalQuestions: questions.length })
+    console.log('questions', questions)
+  }
+
+  correctCardFace = () => {
+    this.state.showAnswer && this.setState({ showAnswer: false })
   }
 
   nextQuestion = () => {
-    console.log('NEXT QUESTION')
-    this.state.questionsLeft.length > 1
-      ? this.setState(prevState => ({
-        questionsLeft: [...prevState.questionsLeft.splice(-1, 1)]
-      }))
-      : this.setState({ showResults: true })
+    if (this.state.questionsLeft.length === 1) {
+      return this.setState({ showResults: true })
+    }
+
+    this.correctCardFace()
+
+    const newQuestionsLeft = [...this.state.questionsLeft]
+    newQuestionsLeft.splice(0, 1)
+    this.setState({ questionsLeft: newQuestionsLeft })
   }
 
   nextQuestionCorrect = () => {
-    this.setState({ correctAnswers: this.correctAnswers + 1 })
+    this.setState(prevState => ({
+      correctAnswers: prevState.correctAnswers + 1
+    }))
     this.nextQuestion()
   }
 
   resetData = () => {
     this.setState({
-      questionsLeft: this.state.questions,
+      questionsLeft: this.props.navigation.getParam('deck').questions,
       showAnswer: false,
       showResults: false,
       correctAnswers: 0
@@ -49,7 +59,6 @@ export default class Quiz extends Component {
 
   startAgain = () => {
     this.resetData()
-    this.props.navigation.goBack()
   }
 
   toggleAnswer = () => {
@@ -57,13 +66,10 @@ export default class Quiz extends Component {
   }
 
   render () {
-    console.log('quiz props', this.props)
     console.log('quiz STATE', this.state)
-    const deck = this.props.navigation.getParam('deck')
-    console.log('deck for quiz', deck)
 
     const {
-      questions,
+      totalQuestions,
       questionsLeft,
       showAnswer,
       showResults,
@@ -81,11 +87,12 @@ export default class Quiz extends Component {
       return (
         <View style={sharedStyles.container}>
 
-          <Text style={styles.completed}>
+          <Text style={styles.results}>
         Quiz completed!
           </Text>
-          <Text styles={styles.results}>
-        You got {correctAnswers} correct answers out of {questions.length}.
+          {console.log('correct', correctAnswers)}
+          <Text style={styles.results}>
+        You got {correctAnswers} correct answers out of {totalQuestions}.
           </Text>
 
           <View style={sharedStyles.buttonsContainer}>
@@ -109,12 +116,12 @@ export default class Quiz extends Component {
       <View style={sharedStyles.container}>
 
         <Text style={styles.counter}>
-       Question {questions.length - questionsLeft.length + 1} of {questions.length}
+       Question {totalQuestions - questionsLeft.length + 1} of {totalQuestions}
         </Text>
 
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: showAnswer ? 'white' : 'darkblue' }]}>
 
-          <Text style={styles.cardText}>
+          <Text style={[styles.cardText, { color: !showAnswer ? 'white' : 'darkblue' }]}>
             {!showAnswer
               ? questionsLeft[0].question
               : questionsLeft[0].answer
@@ -167,7 +174,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 50,
-    backgroundColor: 'darkblue',
     borderWidth: 5,
     borderColor: '#ba8c28',
     padding: 10,
@@ -175,9 +181,8 @@ export const styles = StyleSheet.create({
     height: 200
   },
   cardText: {
-    color: 'white',
     fontSize: 20,
-    alignItems: 'center'
+    textAlign: 'center'
   },
   flipCard: {
     marginTop: 30
@@ -188,6 +193,9 @@ export const styles = StyleSheet.create({
   },
   counter: {
     fontSize: 16
-
+  },
+  results: {
+    fontSize: 20,
+    marginTop: 30
   }
 })

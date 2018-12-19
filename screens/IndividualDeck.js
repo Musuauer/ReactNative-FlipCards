@@ -19,8 +19,6 @@ class IndividualDeck extends Component {
   }
 
   render () {
-    console.log('individualdeck PROPS', this.props)
-
     const { title, questions } = this.props.thisDeck[0]
     const cardsNumber = questions.length
 
