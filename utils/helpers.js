@@ -3,6 +3,8 @@ import { Notifications, Permissions } from 'expo'
 
 const NOTIFICATION_KEY = 'FlipCards:notifications'
 
+// adapted from the course lessons
+
 function createNotification () {
   return {
     title: 'Study time!',
