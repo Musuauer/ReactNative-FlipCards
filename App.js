@@ -12,6 +12,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
 import middleware from './middleware'
+import { setLocalNotification } from './utils/helpers'
 
 const Tabs = createMaterialTopTabNavigator(
   {
@@ -81,6 +82,7 @@ let store = createStore(reducer, middleware)
 export default class App extends Component {
   componentDidMount () {
     saveDataToLocalStorage()
+    setLocalNotification()
   }
   render () {
     return (
